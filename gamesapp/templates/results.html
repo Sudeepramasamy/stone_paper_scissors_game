@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Results</title>
+</head>
+<body>
+    <h1>Game Results</h1>
+    
+    <ul>
+        {% for result in game_results %}
+            <li>Round {{ result.round}}: {{ result.winner }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Overall Winner: {{ overall }}</h2>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone, Paper, Scissors Game</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/play.css' %}">
+</head>
+<body>
+    <div class="game-container">
+        <div class="player">
+            <h2>{{ playername }}</h2> 
+            <img onclick="playgame('rock')"src="{% static 'rock.png' %}" alt="Rock" id="rock" class="choice" data-choice="rock">
+            <img onclick="playgame('paper')"src="{% static 'paper.jpeg' %}" alt="Rock" id="paper" class="choice" data-choice="paper">
+            <img onclick="playgame('scissor')"src="{% static 'sc.png' %}" alt="Rock" id="scissor" class="choice" data-choice="scissor">
+        </div>
+
+        <div class="vs">
+            <h1>VS</h1>
+            <div id="playerdisplay">PLAYER:</div>
+            <div id="computerdisplay">COMPUTER:</div>
+            <div id="resultdisplay">RESULT:</div>
+            <div id="rounddisplay">ROUND: 1</div> 
+        </div>
+
+        <div class="computer">
+            <h2>Computer</h2>
+            <img src="{% static 'rock.png' %}" alt="Rock" id="rock1">
+            <img src="{% static 'paper.jpeg' %}" alt="Paper" id="paper1">
+            <img src="{% static 'sc.png' %}" alt="Scissor" id="scissor1">
+        </div>
+    </div>
+
+    <script>
+        const choices = ["rock" , "paper" , "scissor"]
+        const playerdisplay = document.getElementById("playerdisplay");
+        const computerdisplay = document.getElementById("computerdisplay");
+        const resultdisplay = document.getElementById("resultdisplay");
+        const rounddisplay = document.getElementById("rounddisplay");
+
+        let round=1;
+        const totalround=6;
+        let playerwins=0;
+        let computerwins=0;
+
+        function playgame(playerChoice) {
+            if(round<=totalround){
+            // Randomly select computer's choice
+            const playername = "{{ playername }}";
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+        
+            // Display player and computer choices
+            playerdisplay.innerText = `PLAYER: ${playerChoice}`;
+            computerdisplay.innerText = `COMPUTER: ${computerChoice}`;
+
+            rounddisplay.innerText = `ROUND: ${round}`;
+        
+            // Send choices to the backend
+            fetch("/play-game/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken") // Include CSRF token for POST request
+                },
+                body: JSON.stringify({
+                    player_choice: playerChoice,
+                    computer_choice: computerChoice,
+                    player_name: playername
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display result
+                resultdisplay.innerText = `RESULT: ${data.result}`;
+
+                if (data.result.includes(playername)){
+                    playerwins++;
+                }else if (data.result.includes('computer')){
+                    computerwins++;
+                }
+                round++;
+                if (round>totalround){
+                    let finalresult;
+                    if (playerwins > computerwins){
+                        finalresult = `${playername} wins the game!`;
+                    } else if (computerwins > playerwins){
+                        finalresult = 'Computer wins the game!';
+                    } else {
+                        finalresult = "its a tie;"
+                    }
+                    resultdisplay.innerText= `FINAL RESULT: ${finalresult}`;
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        } else {
+            alert("Game over! Please refresh to start a new game.");
+        }
+    }
+        
+        // Helper function to get the CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+
+    </script>
+       
+    
+</body>
+</html>

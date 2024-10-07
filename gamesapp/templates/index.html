@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Stone, Paper, Scissors Game</h1>
+        <div class="form-container">
+            <form action="{% url 'play' %}" method="POST">
+                {% csrf_token %}
+                <label for="name">Enter Your Name</label>
+                <input type="text" id="name" name="yourname" required>
+                <button type="submit">START</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

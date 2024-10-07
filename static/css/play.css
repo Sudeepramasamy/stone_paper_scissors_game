@@ -1,0 +1,76 @@
+/* Style for the main game container */
+.game-container {
+    display: flex;
+    justify-content: space-between; /* Align player and computer sections on opposite sides */
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+/* Player and computer sections - aligning content vertically */
+.player, .computer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%; /* Make sure both player and computer take up equal width */
+}
+
+/* Image styles - reducing size and adding vertical spacing */
+img {
+    width: 80px; /* Adjust the size of the images */
+    height: auto;
+    margin: 10px 0; /* Space between each image */
+}
+
+/* VS Section */
+.vs {
+    font-size: 3rem;
+    font-weight: bold;
+    width: 10%; /* Adjust width to position the 'VS' text */
+    text-align: center;
+}
+
+/* Player name and computer name styles */
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+/* Add a border color change and rotate the image */
+.player img:hover {
+    transform: rotate(10deg) scale(1.2); /* Slight rotation along with scaling */
+    border: 2px solid blue; /* Add a blue border on hover */
+}
+/* Styling for the vs section */
+.vs h1 {
+    font-size: 2em;
+    color: #ff4500; /* Orange color for VS */
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add slight shadow for depth */
+}
+
+#playerdisplay, #computerdisplay, #resultdisplay {
+    font-size: 0.5em;
+    color: #333;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: none; /* Remove box shadow */
+    display: flex; /* Use flex layout for inline display */
+    justify-content: space-between; /* Spread content evenly */
+    align-items: center; /* Center items vertically */
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+}
+
+/* Special styling for result display */
+#resultdisplay {
+    font-size: 0.5em;
+    color: #008000; /* Keep the result text color */
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+}
+
