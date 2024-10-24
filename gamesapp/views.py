@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import random
 from django.http import JsonResponse
-from .models import GameResult
+from .models import GameResult,Player
 import json
 from django.views.decorators.csrf import csrf_exempt
 
@@ -26,6 +26,15 @@ def play_game(request):
 
         # Determine the winner
         result = determine_winner(player_choice, computer_choice, player_name)
+        
+        player , created = Player.objects.get_or_create(name=player_name)
+        GameResult.objects.create(
+            player=player,
+            player_choice=player_choice,
+            computer_choice=computer_choice,
+            result=result,
+            round_number=GameResult.objects.filter(player=player).count()+1
+        )
 
         # Send response back to the frontend
         return JsonResponse({"result": result})
